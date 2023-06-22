@@ -29,7 +29,6 @@
 package osquery
 
 import (
-	"fmt"
 	"os/exec"
 	"runtime"
 	"strings"
