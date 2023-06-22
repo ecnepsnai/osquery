@@ -29,7 +29,6 @@
 package osquery
 
 import (
-	"fmt"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -164,7 +163,6 @@ func getWindows() (*OSInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("%#v\n", string(out))
 
 	params := parseKeyValueList(string(out))
 
