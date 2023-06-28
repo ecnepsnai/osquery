@@ -2,4 +2,4 @@
 
 package osquery
 
-const lineEnding = "\r\r\n"
+const lineEnding = "\r\n"
