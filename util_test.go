@@ -29,8 +29,11 @@ Caption=Microsoft Windows 10 Pro
 Version=10.0.19042`
 	params := parseKeyValueList(list)
 
-	if params["BuildNumber"] != "19042" {
-		t.Errorf("Invalid parameter from KV list")
+	expected := "19042"
+	got := params["BuildNumber"]
+
+	if got != expected {
+		t.Errorf("Invalid parameter from KV list. Expected '%s' got '%s'", expected, got)
 	}
 }
 
@@ -41,7 +44,10 @@ BuildVersion:    19H15`
 
 	params := parseParamsList(list)
 
-	if params["BuildVersion"] != "19H15" {
-		t.Errorf("Unexpected parameter from params list. Got '%s' expected '19H15'", params["BuildVersion"])
+	expected := "19H15"
+	got := params["BuildVersion"]
+
+	if got != expected {
+		t.Errorf("Unexpected parameter from params list. Got '%s' expected '%s'", got, expected)
 	}
 }

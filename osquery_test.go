@@ -2,6 +2,7 @@ package osquery_test
 
 import (
 	"fmt"
+	"os"
 	"runtime"
 	"strings"
 	"testing"
@@ -21,6 +22,40 @@ func TestQuery(t *testing.T) {
 		t.Fatalf("Invalid OS platform. Got '%s' expected '%s'", info.Platform, runtime.GOOS)
 	}
 	t.Logf("OS Info: %#v", *info)
+}
+
+func TestQueryGithubActions(t *testing.T) {
+	if os.Getenv("GITHUB_ACTION") == "" {
+		t.SkipNow()
+	}
+
+	info, err := osquery.Get()
+	if err != nil {
+		panic(err)
+	}
+
+	variant := strings.ToLower(info.Variant)
+
+	if runtime.GOOS == "win32" {
+		if !strings.HasPrefix(variant, "microsoft windows server") {
+			t.Errorf("Unexpected variant '%s', expected to start with 'microsoft windows server'", variant)
+		}
+	} else {
+		expectedVariant := ""
+
+		switch runtime.GOOS {
+		case "linux":
+			expectedVariant = "ubuntu"
+		case "darwin":
+			expectedVariant = "macos"
+		default:
+			t.Fatalf("Unknown goos %s", runtime.GOOS)
+		}
+
+		if variant != expectedVariant {
+			t.Errorf("Unexpected variant '%s' expected '%s'", variant, expectedVariant)
+		}
+	}
 }
 
 func ExampleGet() {
