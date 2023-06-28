@@ -36,7 +36,7 @@ func TestQueryGithubActions(t *testing.T) {
 
 	variant := strings.ToLower(info.Variant)
 
-	if runtime.GOOS == "win32" {
+	if runtime.GOOS == "windows" {
 		if !strings.HasPrefix(variant, "microsoft windows server") {
 			t.Errorf("Unexpected variant '%s', expected to start with 'microsoft windows server'", variant)
 		}
@@ -49,7 +49,7 @@ func TestQueryGithubActions(t *testing.T) {
 		case "darwin":
 			expectedVariant = "macos"
 		default:
-			t.Fatalf("Unknown goos %s", runtime.GOOS)
+			t.Fatalf("Unknown GOOS %s", runtime.GOOS)
 		}
 
 		if variant != expectedVariant {

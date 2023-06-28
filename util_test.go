@@ -1,6 +1,8 @@
 package osquery
 
 import (
+	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -21,12 +23,12 @@ func TestKvSplit(t *testing.T) {
 }
 
 func TestParseKeyValueList(t *testing.T) {
-	list := `
+	list := fixLineEndings(`
 Something That's not a param
 
 BuildNumber=19042
 Caption=Microsoft Windows 10 Pro
-Version=10.0.19042`
+Version=10.0.19042`)
 	params := parseKeyValueList(list)
 
 	expected := "19042"
@@ -38,9 +40,9 @@ Version=10.0.19042`
 }
 
 func TestParseParamsList(t *testing.T) {
-	list := `ProductName:     Mac OS X
+	list := fixLineEndings(`ProductName:     Mac OS X
 ProductVersion:  10.15.7
-BuildVersion:    19H15`
+BuildVersion:    19H15`)
 
 	params := parseParamsList(list)
 
@@ -50,4 +52,11 @@ BuildVersion:    19H15`
 	if got != expected {
 		t.Errorf("Unexpected parameter from params list. Got '%s' expected '%s'", got, expected)
 	}
+}
+
+func fixLineEndings(s string) string {
+	if runtime.GOOS == "windows" {
+		return strings.ReplaceAll(s, "\n", "\r\n")
+	}
+	return s
 }
